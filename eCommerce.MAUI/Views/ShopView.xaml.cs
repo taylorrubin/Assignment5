@@ -1,0 +1,47 @@
+using eCommerce.MAUI.ViewModels;
+
+namespace eCommerce.MAUI.Views;
+
+public partial class ShopView : ContentPage
+{
+    public ShopView()
+    {
+        InitializeComponent();
+        BindingContext = new ShopViewModel();
+    }
+
+    private void CancelClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        (BindingContext as ShopViewModel)?.Refresh();
+    }
+
+    private void InventorySearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as ShopViewModel)?.Search();
+    }
+
+    private void PlaceInCartClicked(object sender, EventArgs e)
+    {
+        (BindingContext as ShopViewModel)?.PlaceInCart();
+    }
+
+    private void AddCartClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//Cart");
+    }
+
+    private void ApplyTaxClicked(object sender, EventArgs e)
+    {
+        if (double.TryParse(TaxEntry.Text, out double taxRate))
+        {
+            decimal taxRateDecimal = Convert.ToDecimal(taxRate);
+            (BindingContext as ShopViewModel)?.ApplyTax(taxRateDecimal);
+        }
+    }
+
+}
